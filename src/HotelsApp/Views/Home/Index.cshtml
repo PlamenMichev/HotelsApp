@@ -1,0 +1,19 @@
+﻿@model HotelsApp.Models.InputModels.LocationInputModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<form asp-controller="Properties" asp-action="FindProperty" method="post">
+    <label asp-for="Latitute">Latitute</label>
+    <input type="number" asp-for="Latitute" value="" />
+    <label asp-for="Longtitute">Longtitute</label>
+    <input type="number" asp-for="Longtitute" value="" />
+
+    <button type="submit">Get Property</button>
+</form>
