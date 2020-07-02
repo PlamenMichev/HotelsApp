@@ -7,7 +7,6 @@ document.getElementById('submit-button').addEventListener('click', () => {
     };
 
     document.getElementById('loading-image').hidden = false;
-    console.log('data', data);
     $.ajax({
         url: '/api/Properties/FindProperties',
         type: 'POST',
