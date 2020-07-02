@@ -1,7 +1,6 @@
 ﻿// Send request to beckend to add booking for a particular property
 
 function addBooking(propertyId) {
-    console.log('Property id', propertyId);
     const data = {
         HotelId: propertyId,
     }
@@ -12,7 +11,11 @@ function addBooking(propertyId) {
         data: JSON.stringify(data),
         success: function (data) {
             //Change booking count
-            document.getElementById(propertyId).innerHTML = `<strong>Bookings: ${data}</strong>`
+            const elements = document.getElementsByClassName(propertyId + 'sth');
+            console.log(elements);
+            for (let element of elements) {
+                element.innerHTML = `<strong>Bookings: ${data}</strong>`;
+            }
         },
         error: function (error) {
             document.getElementById('loading-image').hidden = true;

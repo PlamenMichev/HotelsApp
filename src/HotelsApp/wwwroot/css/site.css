@@ -19,7 +19,20 @@
 }
 
 #found-hotel {
-    margin-left: 20rem;
+    display: flex;
+}
+
+.map-wrapper {
+    display: flex;
+}
+
+#current-hotel {
+    margin-left: 100px;
+    width: 14rem;
+}
+
+#found-hotel.card:not(:last-of-type) {
+    margin-right: 50px;
 }
 
 .description {
@@ -35,7 +48,7 @@
 
 #wrapper {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 }
 
 .hotel-description {

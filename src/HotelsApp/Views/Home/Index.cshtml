@@ -8,11 +8,19 @@
 <hr />
 
 <div id="wrapper">
-    <div id="map">
-        <div style="width: 640px; height: 480px" id="mapContainer"></div>
-        <p class="description">Click on the map to choose location.</p>
-    </div>
 
+    <div class="map-wrapper">
+
+        <div id="map">
+            <div style="width: 915px; height: 480px" id="mapContainer"></div>
+            <p class="description">Click on the map to choose location.</p>
+            <button id="submit-button" hidden>Get Property</button>
+        </div>
+        
+        <div id="current-hotel">
+            
+        </div>
+    </div>
     <div id="results">
         <div id="loading-image" class="loader" hidden></div>
         <div id="found-hotel">
@@ -25,7 +33,6 @@
 <input id="lat" hidden />
 <input id="lng" hidden />
 
-<button id="submit-button" hidden>Get Property</button>
 
 
 
