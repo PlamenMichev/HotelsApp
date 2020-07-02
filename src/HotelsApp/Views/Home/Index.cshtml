@@ -11,9 +11,9 @@
 
 <form asp-controller="Properties" asp-action="FindProperty" method="post">
     <label asp-for="Latitute">Latitute</label>
-    <input type="number" asp-for="Latitute" value="" />
+    <input type="number" step="any" asp-for="Latitute" value="" />
     <label asp-for="Longtitute">Longtitute</label>
-    <input type="number" asp-for="Longtitute" value="" />
+    <input type="number" step="any" asp-for="Longtitute" value="" />
 
     <button type="submit">Get Property</button>
 </form>

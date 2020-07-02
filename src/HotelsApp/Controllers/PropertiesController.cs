@@ -17,8 +17,15 @@
         [HttpPost]
         public async Task<IActionResult> FindProperty(LocationInputModel inputModel)
         {
-            var result = await propertiesService.GetProperties(inputModel.Latitute, inputModel.Longtitute);
-            return this.View();
+            try
+            {
+                var result = await propertiesService.GetProperties(inputModel.Latitute, inputModel.Longtitute);
+                return this.View(result);
+            }
+            catch (System.Exception)
+            {
+                return this.Redirect("/");
+            }
         }
     }
 }

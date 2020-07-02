@@ -4,10 +4,16 @@
 
     public class PropertyViewModel
     {
-        [JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string PlaceId { get; set; }
 
-        [JsonPropertyName("title")]
-        public string Title { get; set; }
+        public string Name { get; set; }
+
+        public PropertyLocationViewModel Location { get; set; }
+
+        public ContactsViewModel Contacts { get; set; }
+
+        public MediaViewModel Media { get; set; }
+
+        public WorkingHoursViewModel Extended { get; set; }
     }
 }
