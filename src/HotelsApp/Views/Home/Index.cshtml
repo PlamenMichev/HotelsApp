@@ -4,21 +4,23 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h4>Find nearest hotels!</h4>
-</div>
+<h4 id="page-title">Find nearest hotels!</h4>
+<hr />
 
-<div class="row">
-    <div class="col-md-6">
+<div id="wrapper">
+    <div id="map">
         <div style="width: 640px; height: 480px" id="mapContainer"></div>
+        <p class="description">Click on the map to choose location.</p>
     </div>
 
-    <div class="col-md-3 ml-3">
+    <div id="results">
         <div id="loading-image" class="loader" hidden></div>
         <div id="found-hotel">
         </div>
     </div>
 </div>
+
+
 
 <input id="lat" hidden />
 <input id="lng" hidden />

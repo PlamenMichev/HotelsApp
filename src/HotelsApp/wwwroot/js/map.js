@@ -61,5 +61,5 @@ function setUpClickListener(map) {
 
 //Make map resizable
 window.addEventListener('resize', () => map.getViewPort().resize());
-var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
 setUpClickListener(map);

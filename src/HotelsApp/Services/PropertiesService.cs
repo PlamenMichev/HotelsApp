@@ -33,6 +33,8 @@
             var resultAsString = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<ApiResultQueryModel>(resultAsString);
 
+            //Here we take 2 hotels because we may want to extend the functionallity to show more than one hotel
+            //and it will be easy and without problems. We need just to visualize more hotels.
             var foundHotels = result.Results.Items
                 .Take(2)
                 .ToList();
