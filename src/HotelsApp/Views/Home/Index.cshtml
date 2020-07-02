@@ -11,9 +11,98 @@
 
 <form asp-controller="Properties" asp-action="FindProperty" method="post">
     <label asp-for="Latitute">Latitute</label>
-    <input type="number" step="any" asp-for="Latitute" value="" />
+    <input id="lat" type="number" step="any" asp-for="Latitute" value="" />
     <label asp-for="Longtitute">Longtitute</label>
-    <input type="number" step="any" asp-for="Longtitute" value="" />
+    <input id="lng" type="number" step="any" asp-for="Longtitute" value="" />
 
-    <button type="submit">Get Property</button>
+    <button id="submit-button" type="submit" hidden>Get Property</button>
 </form>
+
+<div style="width: 640px; height: 480px" id="mapContainer"></div>
+
+<script>
+    let currentLat = 0;
+    let currentLng = 0;
+    var platform = new H.service.Platform({
+        apikey: "nEszsNd4L0Iut8_Xus2aQ6pcih4OCxCKQjGNQK_gxFg"
+    });
+    var defaultLayers = platform.createDefaultLayers();
+
+    let map = new H.Map(document.getElementById('mapContainer'),
+            defaultLayers.vector.normal.map, {
+            zoom: 14,
+            pixelRatio: window.devicePixelRatio || 1
+        });
+
+    function setPosition(position) {
+        console.log(position);
+        currentLat = position.coords.latitude;
+        currentLng = position.coords.longitude;
+        map.setCenter({ lat: currentLat, lng: currentLng });
+    }
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(setPosition);
+        }
+    }
+
+    window.onload = getLocation();
+
+    function setUpClickListener(map) {
+        // Attach an event listener to map display
+        // obtain the coordinates and display in an alert box.
+        map.addEventListener('tap', function (evt) {
+            var coord = map.screenToGeo(evt.currentPointer.viewportX,
+                evt.currentPointer.viewportY);
+            console.log(coord.lat + ' ' + coord.lng);
+
+            // Define a variable holding SVG mark-up that defines an icon image:
+            var svgMarkup = '<svg width="24" height="24" ' +
+                'xmlns="http://www.w3.org/2000/svg">' +
+                '<rect stroke="white" fill="#1b468d" x="1" y="1" width="22" ' +
+                'height="22" /><text x="12" y="18" font-size="12pt" ' +
+                'font-family="Arial" font-weight="bold" text-anchor="middle" ' +
+                'fill="white">H</text></svg>';
+
+            // Create an icon, an object holding the latitude and longitude, and a marker:
+            var icon = new H.map.Icon(svgMarkup),
+                coords = { lat: coord.lat, lng: coord.lng },
+                marker = new H.map.Marker(coords, { icon: icon });
+
+            // Add the marker to the map and center the map at the location of the marker:
+            map.removeObjects(map.getObjects())
+            map.addObject(marker);
+            map.setCenter(coords);
+
+
+            document.getElementById('submit-button').hidden = false;
+            document.getElementById('lat').value = coord.lat;
+            document.getElementById('lng').value = coord.lng;
+        });
+    }
+    // add a resize listener to make sure that the map occupies the whole container
+    window.addEventListener('resize', () => map.getViewPort().resize());
+
+    //Step 3: make the map interactive
+    // MapEvents enables the event system
+    // Behavior implements default interactions for pan/zoom (also on mobile touch environments)
+    var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+
+    // Step 4: create custom logging facilities
+    var logContainer = document.createElement('ul');
+    logContainer.className = 'log';
+    logContainer.innerHTML = '<li class="log-entry">Try clicking on the map</li>';
+    map.getElement().appendChild(logContainer);
+
+    // Helper for logging events
+    function logEvent(str) {
+        var entry = document.createElement('li');
+        entry.className = 'log-entry';
+        entry.textContent = str;
+        logContainer.insertBefore(entry, logContainer.firstChild);
+    }
+
+
+    setUpClickListener(map);
+</script>
