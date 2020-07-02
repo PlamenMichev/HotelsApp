@@ -6,5 +6,7 @@
     public interface IPropertiesService
     {
         public Task<PropertyViewModel[]> GetProperties(double latitude, double longtitude);
+
+        public Task<int> AddBookingToProperty(string propertyId);
     }
 }

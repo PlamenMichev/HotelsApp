@@ -8,6 +8,8 @@
 
         public string Name { get; set; }
 
+        public int Bookings { get; set; }
+
         public PropertyLocationViewModel Location { get; set; }
 
         public ContactsViewModel Contacts { get; set; }

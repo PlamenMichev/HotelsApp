@@ -2,8 +2,8 @@
 {
     public class LocationInputModel
     {
-        public double Latitute { get; set; }
+        public double Latitude { get; set; }
 
-        public double Longtitute { get; set; }
+        public double Longtitude { get; set; }
     }
 }

@@ -1,8 +1,11 @@
 ﻿namespace HotelsApp.Services
 {
+    using HotelsApp.Data;
+    using HotelsApp.Data.Models;
     using HotelsApp.Models.QueryModels;
     using HotelsApp.Models.ViewModels;
     using HotelsApp.Services.Contracts;
+    using Microsoft.EntityFrameworkCore;
     using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
@@ -14,11 +17,13 @@
     public class PropertiesService : IPropertiesService
     {
         private readonly HttpClient httpClient;
+        private readonly ApplicationDbContext dbContext;
         private const string defaultHotelPicture = "https://freedesignfile.com/upload/2019/07/Hotel-cartoon-vector.jpg";
 
-        public PropertiesService()
+        public PropertiesService(ApplicationDbContext dbContext)
         {
             this.httpClient = HttpClientFactory.Create();
+            this.dbContext = dbContext;
         }
 
         public async Task<PropertyViewModel[]> GetProperties(double latitude, double longtitude)
@@ -29,7 +34,7 @@
             var result = JsonConvert.DeserializeObject<ApiResultQueryModel>(resultAsString);
 
             var foundHotels = result.Results.Items
-                .Take(5)
+                .Take(2)
                 .ToList();
 
             if (foundHotels.Count == 0)
@@ -52,10 +57,49 @@
                         Value = defaultHotelPicture,
                     });
                 }
+
+                // Check if hotel is in db
+                var currentHotel = await this.dbContext
+                    .Hotels
+                    .FirstOrDefaultAsync(x => x.HotelId == hotelInfo.PlaceId);
+
+                // If hotel is not in the db we add it
+                if (currentHotel == null)
+                {
+                    var newHotel = new Hotel()
+                    {
+                        HotelId = hotelInfo.PlaceId,
+                        BookingsCount = 0,
+                    };
+
+                    currentHotel = this.dbContext.Hotels.Add(newHotel).Entity;
+                    await this.dbContext.SaveChangesAsync();
+                }
+
+                // We get hotel bookings and add them to the model
+                hotelInfo.Bookings = currentHotel.BookingsCount;
+
                 hotelsResult.Add(hotelInfo);
             }
 
             return hotelsResult.ToArray();
+        }
+
+        public async Task<int> AddBookingToProperty(string propertyId)
+        {
+            var property = await this.dbContext
+                .Hotels
+                .FirstOrDefaultAsync(x => x.HotelId == propertyId);
+
+            if (property == null)
+            {
+                throw new Exception("Property Not Found!");
+            }
+
+            property.BookingsCount++;
+            await this.dbContext.SaveChangesAsync();
+
+            return property.BookingsCount;
         }
     }
 }
