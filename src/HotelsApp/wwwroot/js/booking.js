@@ -12,7 +12,6 @@ function addBooking(propertyId) {
         success: function (data) {
             //Change booking count
             const elements = document.getElementsByClassName(propertyId + 'sth');
-            console.log(elements);
             for (let element of elements) {
                 element.innerHTML = `<strong>Bookings: ${data}</strong>`;
             }

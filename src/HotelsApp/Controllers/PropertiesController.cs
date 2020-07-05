@@ -6,7 +6,7 @@
     using System;
     using System.Threading.Tasks;
 
-    [Route("api/[controller]/")]
+    [Route("api/[controller]")]
     [ApiController]
     public class PropertiesController : Controller
     {
@@ -17,15 +17,17 @@
             this.propertiesService = propertiesService;
         }
 
-        [HttpPost("FindProperties")]
-        public async Task<IActionResult> FindProperties(LocationInputModel inputModel)
+        [HttpGet]
+        public async Task<IActionResult> FindProperties([FromQuery]LocationInputModel inputModel)
         {
             try
             {
-                var result = await propertiesService.GetProperties(inputModel.Latitude, inputModel.Longtitude);
+                var latitude = double.Parse(inputModel.At.Split(",")[0]);
+                var longtitude = double.Parse(inputModel.At.Split(",")[1]);
+                var result = await propertiesService.GetProperties(latitude, longtitude);
                 return this.Json(result);
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 return this.NotFound();
             }
@@ -39,7 +41,7 @@
                 var result = await propertiesService.AddBookingToProperty(inputModel.HotelId);
                 return this.Json(result);
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 return this.NotFound();
             }

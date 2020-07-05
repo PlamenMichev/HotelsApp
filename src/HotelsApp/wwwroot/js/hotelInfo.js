@@ -8,10 +8,9 @@ document.getElementById('submit-button').addEventListener('click', () => {
 
     document.getElementById('loading-image').hidden = false;
     $.ajax({
-        url: '/api/Properties/FindProperties',
-        type: 'POST',
+        url: `/api/Properties?at=${data.Latitude},${data.Longtitude}`,
+        type: 'GET',
         contentType: "application/json; charset=utf-8",
-        data: JSON.stringify(data),
         success: function (data, status) {
 
             document.getElementById('loading-image').hidden = true;
